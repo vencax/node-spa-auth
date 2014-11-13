@@ -1,6 +1,6 @@
 {
   "name": "node-angular-server-side-auth",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "node server side auth app for angular (or any SPA framework)",
   "main": "index.js",
   "engines": {
