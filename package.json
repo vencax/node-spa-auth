@@ -1,0 +1,42 @@
+{
+  "name": "node-angular-server-side-auth",
+  "version": "0.0.1",
+  "description": "node server side auth app for angular (or any SPA framework)",
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "dependencies": {
+    "express-session": "^1.9.1",
+    "jsonwebtoken": "^1.1.2",
+    "passport": "^0.2.1",
+    "passport-facebook": "^1.0.3",
+    "passport-google-oauth": "^0.1.5",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.2",
+    "pbkdf2-sha256": "^1.0.1"
+  },
+  "devDependencies": {
+    "body-parser": "^1.8.2",
+    "coffee-script": "^1.8.0",
+    "grunt": "~0.4.1",
+    "grunt-cli": "*",
+    "grunt-coffeelint": "0.0.8",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-coffee": "~0.6.4",
+    "grunt-contrib-connect": "~0.2.0",
+    "grunt-contrib-copy": "~0.4.0",
+    "grunt-exec": "^0.4.6",
+    "grunt-mocha-test": "~0.8.1",
+    "horaa": "^0.1.2-alpha",
+    "matchdep": "~0.1.1",
+    "request": "^2.42.0",
+    "should": "^4.0.4",
+    "sqlite3": "^3.0.2"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "author": "Vaclav Klecanda",
+  "license": "MIT"
+}
