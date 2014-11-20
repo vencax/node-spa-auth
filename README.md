@@ -1,9 +1,10 @@
 
 # REST server for SPA apps authentication
 
-Tested with angular, but supposing that all other SPA FWks has similar possibilities.
+Tested with angular, but supposing that all other SPA frameworks have similar possibilities.
 Based on [passport](http://passportjs.org/), social auths included.
 Provides authentication based on [jsonwebtoken (JWT)](http://jwt.io/).
+Is express pluggable.
 
 ## Install
 
@@ -23,7 +24,7 @@ Config is performed through few environment variables with obvious meaning:
 Presence of FBCLIENTID variable unlocks facebook authentication.
 Similary for TWITTERCONSUMERKEY and GOOGLECLIENTID.
 
-Another env var are used for registration stuf config:
+Another env var are used for registration stuff config:
 
 - EMAIL_TRANSPORTER_USER: email from who emails are sent (default: admin@localhost)
 - EMAIL_TEMPLATE_DIR: directory where email templates are (default: emailTemplates in this project)
@@ -45,7 +46,7 @@ If used for local user database with sequelize, model with name **User** is expe
 - /logout : GET, performs logout
 - /check : POST (email), checks if given email is already registered (can be used on registration form)
 - /register : POST (name, email, password), register new user
-- /uservefify : GET, completes user registration prcess (the link in email)
+- /uservefify : GET, completes user registration process (the link in email)
 - /setpasswd: POST (passwd), change password form
 - /requestforgotten: POST (email), form for requesting reset of pwd
 
