@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "express-session": "^1.9.1",
+    "handlebars": "^2.0.0",
     "jsonwebtoken": "^1.1.2",
     "passport": "^0.2.1",
     "passport-facebook": "^1.0.3",

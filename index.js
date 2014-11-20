@@ -18,7 +18,7 @@ exports.sequelizeManip = manips.sequelize;
 exports.dummyManip = manips.dummy;
 
 
-exports.init = function(app, usermanip, bodyParser) {
+exports.init = function(app, usermanip, bodyParser, sendMail) {
 
   app.use(passport.initialize());
 
@@ -43,5 +43,6 @@ exports.init = function(app, usermanip, bodyParser) {
   }
 
   require('./lib/local')(app, usermanip, passport, _embedToken, bodyParser);
+  require('./lib/registration')(app, usermanip, sendMail);
 
 };
