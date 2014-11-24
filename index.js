@@ -9,7 +9,7 @@ var _embedToken = function(user) {
   var token = jwt.sign(user, process.env.SERVER_SECRET, {
     expiresInMinutes: tokenValidInMinutes
   });
-  user.token = token;
+  user.dataValues.token = token;
 };
 
 var _pingFrontend = function(req, res) {
