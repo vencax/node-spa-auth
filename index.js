@@ -5,11 +5,10 @@ var passport = require('passport');
 
 var tokenValidInMinutes = process.env.TOKEN_VALIDITY_IN_MINS || 60;
 
-var _embedToken = function(user) {
-  var token = jwt.sign(user, process.env.SERVER_SECRET, {
+var _getToken = function(user) {
+  return jwt.sign(JSON.parse(JSON.stringify(user)), process.env.SERVER_SECRET, {
     expiresInMinutes: tokenValidInMinutes
   });
-  user.dataValues.token = token;
 };
 
 var _pingFrontend = function(req, res) {
@@ -23,16 +22,15 @@ var _pingFrontend = function(req, res) {
   res.redirect('/_socialcallback');
 };
 
-var manips = require('./lib/manips');
-exports.sequelizeManip = manips.sequelize;
-exports.dummyManip = manips.dummy;
+exports.manips = require('./lib/manips');
 
 
 exports.init = function(app, usermanip, bodyParser, sendMail) {
 
   app.use(passport.initialize());
 
-  require('./lib/local')(app, usermanip, passport, _embedToken, bodyParser);
+  app.use(bodyParser.json());
+  require('./lib/local')(app, usermanip, passport, _getToken);
   require('./lib/registration')(app, usermanip, sendMail);
 
   var _initUserInfoRoute = false;
@@ -64,11 +62,17 @@ exports.init = function(app, usermanip, bodyParser, sendMail) {
         if (err) {
           res.status(404).send('TOKEN_NOT_VALID');
         } else {
-          _embedToken(decoded);
-          res.send(decoded);
+          res.send({user: decoded, token: _getToken(decoded)});
         }
       });
     });
   }
+
+  app.use(function(err, req, res, next) {
+    if(err.name && err.name === 'AuthenticationError') {
+      return res.status(400).send('CREDENTIALS_NOT_VALID');
+    }
+    next(err);
+  });
 
 };
