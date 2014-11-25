@@ -1,6 +1,8 @@
 
 # REST server for SPA apps authentication
 
+[![build status](https://api.travis-ci.org/vencax/node-angular-server-side-auth.svg)](https://travis-ci.org/vencax/node-angular-server-side-auth)
+
 Tested with angular, but supposing that all other SPA frameworks have similar possibilities.
 Based on [passport](http://passportjs.org/), social auths included.
 Provides authentication based on [jsonwebtoken (JWT)](http://jwt.io/).
