@@ -17,7 +17,7 @@ var _pingFrontend = function(req, res) {
   });
   res.cookie('sptoken', token, {
     maxAge: 10 * 1000, httpOnly: true,
-    secure: process.env.SECURED_PING_COOKIE || true
+    secure: (process.env.NODE_ENV === 'development') ? false : true
   });
   res.redirect('/_socialcallback');
 };
