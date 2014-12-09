@@ -5,6 +5,7 @@ var passport = require('passport');
 
 var tokenValidInMinutes = process.env.TOKEN_VALIDITY_IN_MINS || 60;
 
+
 var _getToken = function(user) {
   return jwt.sign(JSON.parse(JSON.stringify(user)), process.env.SERVER_SECRET, {
     expiresInMinutes: tokenValidInMinutes
@@ -19,7 +20,7 @@ var _pingFrontend = function(req, res) {
     maxAge: 10 * 1000, httpOnly: true,
     secure: (process.env.NODE_ENV === 'development') ? false : true
   });
-  res.redirect('/_socialcallback');
+  res.redirect(req.headers.origin + '/_socialcallback');
 };
 
 exports.manips = require('./lib/manips');
