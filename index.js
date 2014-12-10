@@ -20,7 +20,11 @@ var _pingFrontend = function(req, res) {
     maxAge: 10 * 1000, httpOnly: true,
     secure: (process.env.NODE_ENV === 'development') ? false : true
   });
-  res.redirect(req.headers.origin + '/_socialcallback');
+
+  // function _clientHost() {
+  //   return req.headers.referer.match(/https?:\/\/[^\/]{2,256}/)[0];
+  // }
+  res.redirect(process.env.CLIENTAPPURL || '' + '/_socialcallback');
 };
 
 exports.manips = require('./lib/manips');
