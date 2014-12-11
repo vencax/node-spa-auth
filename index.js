@@ -25,7 +25,7 @@ var _pingFrontend = function(req, res) {
   //   return req.headers.referer.match(/https?:\/\/[^\/]{2,256}/)[0];
   // }
   var feUrl = process.env.CLIENTAPPURL || '' + '/_socialcallback';
-  console.log('PINGFRONTEND: ' + feUrl)
+  console.log('PINGFRONTEND: ' + feUrl);
   res.redirect(feUrl);
 };
 
