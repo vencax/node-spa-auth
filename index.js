@@ -4,7 +4,6 @@ var passport = require('passport');
 
 
 var tokenValidInMinutes = process.env.TOKEN_VALIDITY_IN_MINS || 60;
-var userInfoValidity
 
 
 var _getToken = function(user) {
