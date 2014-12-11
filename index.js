@@ -24,7 +24,9 @@ var _pingFrontend = function(req, res) {
   // function _clientHost() {
   //   return req.headers.referer.match(/https?:\/\/[^\/]{2,256}/)[0];
   // }
-  res.redirect(process.env.CLIENTAPPURL || '' + '/_socialcallback');
+  var feUrl = process.env.CLIENTAPPURL || '' + '/_socialcallback';
+  console.log('PINGFRONTEND: ' + feUrl)
+  res.redirect(feUrl);
 };
 
 exports.manips = require('./lib/manips');
