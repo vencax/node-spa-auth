@@ -4,6 +4,7 @@ var passport = require('passport');
 
 
 var tokenValidInMinutes = process.env.TOKEN_VALIDITY_IN_MINS || 60;
+var userInfoValidity
 
 
 var _getToken = function(user) {
@@ -17,7 +18,7 @@ var _pingFrontend = function(req, res) {
     expiresInMinutes: process.env.EMAIL_VALIDATION_TOKEN_DURATION || 24 * 60
   });
   res.cookie('sptoken', token, {
-    maxAge: 10 * 1000, httpOnly: true,
+    maxAge: 60 * 60 * 1000, httpOnly: true,
     secure: (process.env.NODE_ENV === 'development') ? false : true
   });
 
