@@ -48,7 +48,7 @@ If used for local user database with sequelize, model with name **User** is expe
 - /logout : GET, performs logout
 - /check : POST (email), checks if given email is already registered (can be used on registration form)
 - /register : POST (name, email, password), register new user
-- /uservefify : GET, completes user registration process (the link in email)
+- /userverify : GET, completes user registration process (the link in email)
 - /setpasswd: POST (passwd), change password form
 - /requestforgotten: POST (email), form for requesting reset of pwd
 
