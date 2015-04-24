@@ -31,6 +31,8 @@ Another env var are used for registration stuff config:
 - EMAIL_TRANSPORTER_USER: email from who emails are sent (default: admin@localhost)
 - EMAIL_TEMPLATE_DIR: directory where email templates are (default: emailTemplates in this project)
 - EMAIL_VALIDATION_TOKEN_DURATION: duration (in minutes) of tokens used in emails
+- CHPASSWDLINK: url with chage password form
+- PROJECT_NAME: name of your project or team used in email templates
 
 Rest of env vars are probably defined due to other parts of your app.
 If not, define following:
