@@ -1,6 +1,6 @@
 {
   "name": "node-angular-server-side-auth",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "node server side auth app for angular (or any SPA framework)",
   "repository": {
     "type": "git",
