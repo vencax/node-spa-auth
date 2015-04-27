@@ -36,7 +36,7 @@ describe "app", ->
     for mdlname, mdl of mdls
       db[mdlname] = mdl
 
-    db.sequelize.sync().on 'success', () ->
+    db.sequelize.sync().then () ->
 
       api = express()
       api.use(bodyParser.urlencoded({ extended: false }))
