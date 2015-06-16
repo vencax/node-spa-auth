@@ -4,7 +4,7 @@ exports.sequelize = function(sequelize, DataTypes) {
 
   return {
 
-    User: sequelize.define('User', {
+    User: sequelize.define('users', {
       name: DataTypes.STRING,
       email: DataTypes.STRING,
       passwd: DataTypes.STRING,
