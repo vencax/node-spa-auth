@@ -7,6 +7,7 @@ bodyParser = require('body-parser')
 express = require('express')
 
 process.env.SERVER_SECRET = 'fhdsakjhfkjal'
+# process.env.DATABASE_URL = 'sqlite://db.sqlite'
 port = process.env.PORT || 3333
 sentemails = []
 sendMail = (mail, cb) ->
@@ -19,30 +20,25 @@ describe "app", ->
   apiMod = require(__dirname + '/../index')
   g = {}
   ctx = {}
-  db =
-    Sequelize: require('sequelize')
+  Sequelize = require('sequelize')
 
   before (done) ->
     # init server
     app = express()
 
-    db.sequelize = new db.Sequelize('database', 'username', 'password',
-      # sqlite! now!
-      dialect: 'sqlite'
-    )
+    sequelize = new Sequelize process.env.DATABASE_URL || 'sqlite:',
+      dialect: 'sqlite'  # sqlite! now!
     # register models
-    mdlsMod = require(__dirname + '/../models.js')
-    mdls = mdlsMod.sequelize(db.sequelize, db.Sequelize)
-    for mdlname, mdl of mdls
-      db[mdlname] = mdl
+    mdlsMod = require(__dirname + '/../models')
+    mdlsMod(sequelize, Sequelize)
 
-    db.sequelize.sync().then () ->
+    sequelize.sync(logging: console.log).then () ->
 
       api = express()
       api.use(bodyParser.urlencoded({ extended: false }))
       api.use(bodyParser.json())
 
-      manip = ctx.manip = apiMod.manips.sequelize(db)
+      manip = ctx.manip = apiMod.manips.sequelize(sequelize)
       apiMod.init api, manip, bodyParser, sendMail
 
       app.use('/auth', api)
@@ -66,4 +62,5 @@ describe "app", ->
   # run the rest of tests
   baseurl = "http://localhost:#{port}/auth"
 
-  require('./register')(ctx, baseurl, request)
+  Register = require('./register')
+  Register(ctx, baseurl, request)

@@ -5,6 +5,7 @@ should = require('should')
 module.exports = (ctx, addr, request) ->
 
   account =
+    uname: 'aborova'
     name: 'Alenka Borova'
     email: 'notyet@dasda.cz'
     passwd: 'fkdjsfjs'
@@ -34,7 +35,7 @@ module.exports = (ctx, addr, request) ->
   it "must login with good credentials", (done) ->
 
     request.post "#{addr}/login", form:
-      username: account.email
+      username: account.uname
       password: account.passwd
     , (err, res, body) ->
       return done(err) if err
@@ -43,10 +44,11 @@ module.exports = (ctx, addr, request) ->
       body.token.should.be.ok
       user = body.user
 
-      ctx.manip.find user.email, (err, found) ->
+      ctx.manip.find user.uname, (err, found) ->
         return done(err) if err
 
         user.id.should.not.be.below 0
+        user.uname.should.eql found.uname
         user.name.should.eql found.name
         user.email.should.eql found.email
         user.state.should.eql 0

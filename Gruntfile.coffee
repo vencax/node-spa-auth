@@ -6,6 +6,8 @@ module.exports = (grunt) ->
   grunt.initConfig
 
     coffeelint:
+      options:
+        max_line_length: value: 120
       app: ["{,*/}*.coffee"]
 
     jshint:
