@@ -17,3 +17,13 @@ exports.sequelize = (db) ->
       done(err)
   validPassword: (user, passwd) ->
     user.passwd == passwd
+
+  delete: (user, done)->
+    user.destroy().then ()->
+      done(null)
+    .catch (err) ->
+      done(err)
+
+  list: (done)->
+    db.models.user.findAll().then (found)->
+      done(null, found)
