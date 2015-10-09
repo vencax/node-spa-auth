@@ -43,6 +43,12 @@ describe "app", ->
 
       app.use('/auth', api)
 
+      Mngmt = require(__dirname + '/../lib/management')(manip)
+      managementApp = express()
+      managementApp.use(bodyParser.json())
+      Mngmt.initApp(managementApp)
+      app.use('/mang', managementApp)
+
       g.server = app.listen port, (err) ->
         return done(err) if err
         setTimeout () ->
@@ -60,7 +66,10 @@ describe "app", ->
     done()
 
   # run the rest of tests
-  baseurl = "http://localhost:#{port}/auth"
+  baseurl = "http://localhost:#{port}"
 
   Register = require('./register')
-  Register(ctx, baseurl, request)
+  Register(ctx, "#{baseurl}/auth", request)
+
+  Management = require('./management')
+  Management(ctx, "#{baseurl}/mang")
