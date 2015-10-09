@@ -9,29 +9,13 @@ module.exports = (sequelize, DataTypes) ->
     name: DataTypes.STRING
     email: DataTypes.STRING
     passwd: DataTypes.STRING
+    gid:
+      type: DataTypes.INTEGER
+      allowNull: false
+      defaultValue: 0 # 0-admins
     state:
       type: DataTypes.INTEGER
       allowNull: false
       defaultValue: 0
   ,
     tableName: "users"
-
-
-  Group = sequelize.define "group",
-    name:
-      type: DataTypes.STRING
-      allowNull: false
-      unique: true
-  ,
-    tableName: "groups"
-
-
-  User.belongsToMany Group,
-    as: 'groups'
-    through: 'usergroup'
-    foreignKey: 'userId'
-
-  Group.belongsToMany User,
-    as: 'users'
-    through: 'usergroup'
-    foreignKey: 'groupId'

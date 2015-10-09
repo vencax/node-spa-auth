@@ -16,6 +16,7 @@ module.exports = (app, usermanip, passport, postAuthFunc) ->
           email: email
           name: profile.displayName
           state: 1
+          gid:  process.env.DEFAULT_GID || 1
       usermanip.save user, (err, user) ->
         done null, user
 

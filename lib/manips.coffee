@@ -4,7 +4,6 @@ exports.sequelize = (db) ->
   find: (uname, done) ->
     db.models.user.find
       where: uname: uname
-      include: [{model: db.models.group, as: 'groups'} ]
     .then (found) ->
       return done(null, found)
     .catch (err) ->

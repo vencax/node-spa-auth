@@ -34,6 +34,7 @@ module.exports = (app, usermanip, sendMail) ->
       if user
         return res.status(400).send('Already exists')
       user = usermanip.build(req.body)
+      user.gid = process.env.DEFAULT_GID || 1
       usermanip.save user, (err, saved) ->
         return res.status(400).send(err) if err
         _sendEmail 'verify', user, req, (err) ->
