@@ -40,6 +40,19 @@ If not, define following:
 
 - SERVER_SECRET: random string
 
+## CLI
+
+Command line interface provided for user creation and modification.
+Create with e.g.:
+```
+node manage_cli.js create \
+'{"uname":"saruman","email":"saruman@mordor.io","passwd": "whisperings","gid": 0}'
+```
+Update with e.g.:
+```
+node manage_cli.js update \
+'{"uname":"saruman","change":{"email":"saruman@mordor.gov","passwd": "whisper.."}}'
+```
 
 ## Dependencies
 
