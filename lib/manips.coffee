@@ -20,7 +20,7 @@ exports.sequelize = (db) ->
 
   delete: (user, done)->
     user.destroy().then ()->
-      done(null)
+      done(null, 'deleted')
     .catch (err) ->
       done(err)
 

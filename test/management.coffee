@@ -51,6 +51,21 @@ module.exports = (ctx, addr) ->
       body.email.should.eql 'updated@fjdskl.cz'
       done()
 
+  it "must NOT update notexistent user", (done) ->
+
+    request
+      url: "#{addr}/notexistent"
+      body:
+        email: 'updated@fjdskl.cz'
+        gid: 1
+      json: true,
+      method: 'put'
+    , (err, res, body) ->
+      return done err if err
+
+      res.statusCode.should.eql 404
+      done()
+
   it "must remove user", (done) ->
 
     request
@@ -61,4 +76,15 @@ module.exports = (ctx, addr) ->
 
       res.statusCode.should.eql 200
       body.should.eql 'deleted'
+      done()
+
+  it "must NOT remove notexistent user", (done) ->
+
+    request
+      url: "#{addr}/notexistent"
+      method: 'delete'
+    , (err, res, body) ->
+      return done err if err
+
+      res.statusCode.should.eql 404
       done()

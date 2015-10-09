@@ -50,6 +50,9 @@ switch (cmdValue) {
         var uname = data.uname;
         var change = data.change;
         Mngmt.update(uname, change, function(err, user) {
+          if(user === null) {
+            onError("user " + uname + " not found");
+          }
           if(err) { return onError(err); }
           console.log(uname + " updated");
         });
