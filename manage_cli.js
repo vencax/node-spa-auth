@@ -51,7 +51,7 @@ switch (cmdValue) {
         var change = data.change;
         Mngmt.update(uname, change, function(err, user) {
           if(err) { return onError(err); }
-          console.log(uname + "updated");
+          console.log(uname + " updated");
         });
       } catch(err) {
         onError('user attributes in JSON missing or corrupt')
