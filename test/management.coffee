@@ -39,6 +39,7 @@ module.exports = (ctx, addr) ->
       url: "#{addr}/#{sauron.uname}"
       body:
         email: 'updated@fjdskl.cz'
+        gid: 1
       json: true,
       method: 'put'
     , (err, res, body) ->
