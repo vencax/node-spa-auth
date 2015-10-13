@@ -3,7 +3,7 @@ exports.sequelize = (db) ->
 
   find: (uname, done) ->
     db.models.user.find
-      where: uname: uname
+      where: $or: [{uname: uname}, {email: uname}]
     .then (found) ->
       return done(null, found)
     .catch (err) ->

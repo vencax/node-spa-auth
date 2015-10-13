@@ -22,7 +22,7 @@ module.exports = (ctx, addr, request) ->
 
   it "must not login with wrong credentials", (done) ->
     request.post "#{addr}/login", form:
-      username: account.email
+      username: account.uname
       password: 'incorrect'
     , (err, res, body) ->
       return done(err) if err
@@ -53,3 +53,20 @@ module.exports = (ctx, addr, request) ->
         user.email.should.eql found.email
         user.state.should.eql 0
         done()
+
+  it "must login with email as username", (done) ->
+
+    request.post "#{addr}/login", form:
+      username: account.email
+      password: account.passwd
+    , (err, res, body) ->
+      return done(err) if err
+
+      body = JSON.parse(body)
+      body.token.should.be.ok
+      user = body.user
+      user.uname.should.eql account.uname
+      user.name.should.eql account.name
+      user.email.should.eql account.email
+
+      done()
