@@ -7,7 +7,7 @@ module.exports = (usermanip) ->
     usermanip.save(u, cb)
 
   _update = (uname, attrs, cb)->
-    usermanip.find uname, (err, user)->
+    usermanip.find [{uname: uname}], (err, user)->
       return cb(null, user) if not user
       for k, v of attrs
         user[k] = v
@@ -17,7 +17,7 @@ module.exports = (usermanip) ->
     usermanip.list(cb)
 
   _delete = (uname, cb)->
-    usermanip.find uname, (err, user)->
+    usermanip.find [{uname: uname}], (err, user)->
       return cb(null, user) if not user
       usermanip.delete(user, cb)
 

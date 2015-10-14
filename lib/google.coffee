@@ -12,7 +12,7 @@ module.exports = (app, usermanip, passport, postAuthFunc) ->
       email = 'unknown@gmail.com'
     else
       email = profile.emails[0].value
-    usermanip.find email, (err, user) ->
+    usermanip.find [{email: email}], (err, user) ->
       if !user
         user = usermanip.build
           email: email

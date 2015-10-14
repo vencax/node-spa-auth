@@ -30,7 +30,7 @@ module.exports = (app, usermanip, sendMail) ->
     emailing.send(action, user.email, ctx, serverAddr, sendMail, cb)
 
   app.post '/register', (req, res) ->
-    usermanip.find req.body.email, (err, user) ->
+    usermanip.find [{email: req.body.email}], (err, user) ->
       if user
         return res.status(400).send('Already exists')
       user = usermanip.build(req.body)
@@ -46,7 +46,7 @@ module.exports = (app, usermanip, sendMail) ->
     jwt.verify token, process.env.SERVER_SECRET, (err, decoded) ->
       return res.status(404).send('TOKEN_NOT_VALID') if err
 
-      usermanip.find decoded.email, (err, user) ->
+      usermanip.find [{email: decoded.email}], (err, user) ->
         user.state = 1
         # verified
         usermanip.save user, (err, saved) ->
@@ -63,14 +63,14 @@ module.exports = (app, usermanip, sendMail) ->
     jwt.verify token, process.env.SERVER_SECRET, (err, decoded) ->
       return res.status(400).send('TOKEN_NOT_VALID') if err
 
-      usermanip.find decoded.email, (err, user) ->
+      usermanip.find [{email: decoded.email}], (err, user) ->
         user.passwd = req.body.passwd
         usermanip.save user, (err, saved) ->
           return res.status(400).send(err) if err
           res.status(200).send 'PWD_CHANGED'
 
   app.post '/requestforgotten', (req, res) ->
-    usermanip.find req.body.email, (err, user) ->
+    usermanip.find [{email: req.body.email}], (err, user) ->
       return res.status(400).send(err) if err
       return res.status(404).send('USER_NOT_FOUND') if !user
 

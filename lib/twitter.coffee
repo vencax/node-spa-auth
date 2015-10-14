@@ -8,7 +8,7 @@ module.exports = (app, usermanip, passport, postAuthFunc) ->
     callbackURL: process.env.AUTH_URL + '/twitter/callback'
   , (accessToken, refreshToken, profile, done) ->
     email = profile.username + '@twitter.com'
-    usermanip.find email, (err, user) ->
+    usermanip.find [{email: email}], (err, user) ->
       if !user
         user = usermanip.build
           email: email

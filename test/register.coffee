@@ -10,6 +10,16 @@ module.exports = (ctx, addr, request) ->
     email: 'notyet@dasda.cz'
     passwd: 'fkdjsfjs'
 
+  it "must return empty array on not existing email", (done) ->
+    request.post "#{addr}/check", form:
+      email: account.uname
+    , (err, res, body) ->
+      return done(err) if err
+
+      res.statusCode.should.eql 200
+      body.should.eql '[]'
+      done()
+
   it "must register a new local user", (done) ->
 
     request.post "#{addr}/register", form: account, (err, res, body) ->
@@ -44,7 +54,7 @@ module.exports = (ctx, addr, request) ->
       body.token.should.be.ok
       user = body.user
 
-      ctx.manip.find user.uname, (err, found) ->
+      ctx.manip.find [{"uname": user.uname}], (err, found) ->
         return done(err) if err
 
         user.id.should.not.be.below 0
@@ -69,4 +79,24 @@ module.exports = (ctx, addr, request) ->
       user.name.should.eql account.name
       user.email.should.eql account.email
 
+      done()
+
+  it "must return [0] on ALREADY existing email", (done) ->
+    request.post "#{addr}/check", form:
+      email: account.email
+    , (err, res, body) ->
+      return done(err) if err
+
+      res.statusCode.should.eql 200
+      body.should.eql '[0]'
+      done()
+
+  it "must return [0] on ALREADY existing uname", (done) ->
+    request.post "#{addr}/check", form:
+      uname: account.uname
+    , (err, res, body) ->
+      return done(err) if err
+
+      res.statusCode.should.eql 200
+      body.should.eql '[0]'
       done()

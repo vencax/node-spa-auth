@@ -1,9 +1,14 @@
 
 exports.sequelize = (db) ->
 
-  find: (uname, done) ->
+  find: (condition, done) ->
+    if condition.length > 1
+      condition = {$or: condition}
+    else
+      condition = condition[0]
+
     db.models.user.find
-      where: $or: [{uname: uname}, {email: uname}]
+      where: condition
     .then (found) ->
       return done(null, found)
     .catch (err) ->

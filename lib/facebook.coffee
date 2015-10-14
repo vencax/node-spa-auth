@@ -8,7 +8,7 @@ module.exports = (app, usermanip, passport, postAuthFunc) ->
     callbackURL: process.env.AUTH_URL + '/facebook/callback'
   , (accessToken, refreshToken, profile, done) ->
     email = profile.username + '@facebook.com'
-    usermanip.find email, (err, user) ->
+    usermanip.find [{email:email}], (err, user) ->
       return done(err) if err
 
       if !user
