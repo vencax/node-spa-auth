@@ -13,6 +13,9 @@ module.exports = (usermanip) ->
         user[k] = v
       usermanip.save user, cb
 
+  _get = (id, cb)->
+    usermanip.find [{id: id}], cb
+
   _list = (cb)->
     usermanip.list(cb)
 
@@ -27,6 +30,13 @@ module.exports = (usermanip) ->
       _list (err, results)->
         return res.status(400).send(err) if err
         res.json(results)
+
+    app.get '/:id', (req, res) ->
+      _get req.params.id, (err, user)->
+        return res.status(400).send(err) if err
+        return res.status(404).send(err) if not user
+        delete user.passwd
+        res.json(user)
 
     app.post '/', (req, res) ->
       _create req.body, (err, user)->

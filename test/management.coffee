@@ -24,6 +24,17 @@ module.exports = (ctx, addr) ->
       body.should.eql 2
       done()
 
+  it "must get sauron", (done) ->
+    request "#{addr}/2", (err, res, body) ->
+      return done(err) if err
+
+      res.statusCode.should.eql 200
+      body = JSON.parse(body)
+      body.uname.should.eql sauron.uname
+      body.name.should.eql sauron.name
+      body.email.should.eql sauron.email
+      done()
+
   it "must list all users", (done) ->
     request "#{addr}/", (err, res, body) ->
       return done(err) if err
