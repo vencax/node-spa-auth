@@ -22,10 +22,11 @@ module.exports = (ctx, addr) ->
       res.statusCode.should.eql 201
       body = JSON.parse(body)
       body.should.eql 2
+      sauron.id = body
       done()
 
   it "must get sauron", (done) ->
-    request "#{addr}/2", (err, res, body) ->
+    request "#{addr}/#{sauron.id}", (err, res, body) ->
       return done(err) if err
 
       res.statusCode.should.eql 200
@@ -47,7 +48,7 @@ module.exports = (ctx, addr) ->
   it "must update user", (done) ->
 
     request
-      url: "#{addr}/#{sauron.uname}"
+      url: "#{addr}/#{sauron.id}"
       body:
         email: 'updated@fjdskl.cz'
         gid: 1
@@ -80,7 +81,7 @@ module.exports = (ctx, addr) ->
   it "must remove user", (done) ->
 
     request
-      url: "#{addr}/#{sauron.uname}"
+      url: "#{addr}/#{sauron.id}"
       method: 'delete'
     , (err, res, body) ->
       return done err if err
