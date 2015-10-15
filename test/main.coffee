@@ -23,6 +23,7 @@ describe "app", ->
   Sequelize = require('sequelize')
 
   before (done) ->
+    this.timeout(5000)
     # init server
     app = express()
 
