@@ -2,13 +2,14 @@ pbkdf2 = require 'pbkdf2-sha256'
 jwt = require 'jsonwebtoken'
 passport = require 'passport'
 
-tokenValidInMinutes = process.env.TOKEN_VALIDITY_IN_MINS || 60 * 60
+tokenExpiresIn = parseInt(process.env.TOKEN_VALIDITY_IN_MINS) * 60 || 24* 60 * 60
+console.log "token validity interval: #{tokenExpiresIn} secs"
 
 _getToken = (user) ->
   return jwt.sign(
     JSON.parse(JSON.stringify(user)),
     process.env.SERVER_SECRET,
-    expiresIn: tokenValidInMinutes
+    expiresIn: tokenExpiresIn
   )
 
 _pingFrontend = (req, res) ->

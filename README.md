@@ -34,6 +34,7 @@ Another env var are used for registration stuff config:
 - FALLBACKLANG: code of fallback language for email template
 - CHPASSWDLINK: url with chage password form
 - PROJECT_NAME: name of your project or team used in email templates
+- TOKEN_VALIDITY_IN_MINS: duration of JWT token in minutes
 
 Rest of env vars are probably defined due to other parts of your app.
 If not, define following:
