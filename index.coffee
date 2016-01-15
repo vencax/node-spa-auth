@@ -28,9 +28,7 @@ _pingFrontend = (req, res) ->
   return res.redirect (process.env.CLIENTAPPURL or '') + '/_socialcallback'
 
 
-exports.manips = require('./lib/manips')
-
-exports.init = (app, usermanip, bodyParser, sendMail) ->
+module.exports = (app, usermanip, bodyParser, sendMail) ->
   app.use passport.initialize()
   app.use bodyParser.json()
 
@@ -74,5 +72,5 @@ exports.init = (app, usermanip, bodyParser, sendMail) ->
 
   app.use (err, req, res, next) ->
     if err.name and err.name == 'AuthenticationError'
-      return res.status(400).send('CREDENTIALS_NOT_VALID')
+      return res.status(401).send('CREDENTIALS_NOT_VALID')
     next(err)

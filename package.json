@@ -1,12 +1,12 @@
 {
-  "name": "node-angular-server-side-auth",
-  "version": "0.2.3",
-  "description": "node server side auth app for angular (or any SPA framework)",
+  "name": "node-spa-auth",
+  "version": "0.3.0",
+  "description": "node server side auth for SPA apps (angular, react, ..)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vencax/node-angular-server-side-auth"
+    "url": "https://github.com/vencax/node-spa-auth"
   },
-  "main": "index.js",
+  "main": "index.coffee",
   "engines": {
     "node": ">=0.8.0"
   },

@@ -1,7 +1,7 @@
 
 # REST server for SPA apps authentication
 
-[![build status](https://api.travis-ci.org/vencax/node-angular-server-side-auth.svg)](https://travis-ci.org/vencax/node-angular-server-side-auth)
+[![build status](https://api.travis-ci.org/vencax/node-spa-auth.svg)](https://travis-ci.org/vencax/node-spa-auth)
 
 Tested with angular, but supposing that all other SPA frameworks have similar possibilities.
 Based on [passport](http://passportjs.org/), social auths included.
@@ -10,7 +10,7 @@ Is express pluggable.
 
 ## Install
 
-	npm install node-angular-server-side-auth --save
+	npm install node-spa-auth --save
 
 ## Configuration
 
@@ -57,7 +57,9 @@ node manage_cli.js update \
 
 ## Dependencies
 
-If used for local user database with sequelize, model with name **User** is expected present.
+NOTE: this lib DO NOT care how the user is stored.
+Instead it recieve usermanip object for all user manipulations.
+See [sequelize_manip.coffee](test/sequelize_manip.coffee) what methodes such object MUST provide.
 
 ## Routes provided
 
@@ -69,4 +71,4 @@ If used for local user database with sequelize, model with name **User** is expe
 - /setpasswd: POST (passwd), change password form
 - /requestforgotten: POST (email), form for requesting reset of pwd
 
-If you want to give a feedback, [raise an issue](https://github.com/vencax/node-angular-server-side-auth/issues).
+If you want to give a feedback, [raise an issue](https://github.com/vencax/node-spa-auth/issues).

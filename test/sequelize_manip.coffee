@@ -1,5 +1,5 @@
 
-exports.sequelize = (db) ->
+module.exports = (db) ->
 
   find: (condition, done) ->
     if condition.length > 1
