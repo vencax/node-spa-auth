@@ -15,7 +15,6 @@ module.exports = (app, usermanip, passport, getToken) ->
   passport.authenticate('local', {session: false, failWithError: true}),
   (req, res) ->
     user = req.user.toJSON()
-    delete user.passwd
     res.send
       user: user
       token: getToken(req.user)

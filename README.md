@@ -14,19 +14,7 @@ Is express pluggable.
 
 ## Configuration
 
-Config is performed through few environment variables with obvious meaning:
-
-- FBCLIENTID
-- FBCLIENTSECRET
-- TWITTERCONSUMERKEY
-- TWITTERCONSUMERSECRET
-- GOOGLECLIENTID
-- GOOGLECLIENTSECRET
-
-Presence of FBCLIENTID variable unlocks facebook authentication.
-Similary for TWITTERCONSUMERKEY and GOOGLECLIENTID.
-
-Another env var are used for registration stuff config:
+Config is performed through few environment variables:
 
 - EMAIL_TRANSPORTER_USER: email from who emails are sent (default: admin@localhost)
 - EMAIL_TEMPLATE_DIR: directory where email templates are (default: emailTemplates in this project)
@@ -47,12 +35,12 @@ Command line interface provided for user creation and modification.
 Create with e.g.:
 ```
 node manage_cli.js create \
-'{"uname":"saruman","email":"saruman@mordor.io","passwd": "whisperings","gid": 0}'
+'{"username":"saruman","email":"saruman@mordor.io","password": "whisperings","gid": 0}'
 ```
 Update with e.g.:
 ```
 node manage_cli.js update \
-'{"uname":"saruman","change":{"email":"saruman@mordor.gov","passwd": "whisper.."}}'
+'{"username":"saruman","change":{"email":"saruman@mordor.gov","password": "whisper.."}}'
 ```
 
 ## Dependencies
