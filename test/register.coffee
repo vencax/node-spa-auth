@@ -12,7 +12,7 @@ module.exports = (g, addr, request) ->
 
   it "must return empty array on not existing email", (done) ->
     request.post "#{addr}/check", form:
-      email: g.account.uname
+      email: g.account.username
     , (err, res, body) ->
       return done(err) if err
       res.statusCode.should.eql 200
@@ -50,9 +50,10 @@ module.exports = (g, addr, request) ->
       method: 'post'
     , (err, res, body) ->
       return done(err) if err
+      console.log body
       res.statusCode.should.eql 200
       body.token.should.be.ok
-      g.manip.find [{"uname": body.user.uname}], (err, found) ->
+      g.manip.find [{"username": body.user.uname}], (err, found) ->
         return done(err) if err
         body.user.id.should.not.be.below 0
         body.user.uname.should.eql found.uname
@@ -79,19 +80,41 @@ module.exports = (g, addr, request) ->
       done()
 
   it "must return [0] on ALREADY existing email", (done) ->
-    request.post "#{addr}/check", form:
-      email: g.account.email
+    request
+      url: "#{addr}/check"
+      body:
+        email: g.account.email
+      json: true
+      method: 'post'
     , (err, res, body) ->
       return done(err) if err
       res.statusCode.should.eql 200
-      body.should.eql '[0]'
+      body.should.eql [0]
       done()
 
   it "must return [0] on ALREADY existing uname", (done) ->
-    request.post "#{addr}/check", form:
-      uname: g.account.uname
+    request
+      url: "#{addr}/check"
+      body:
+        username: g.account.uname
+      json: true
+      method: 'post'
     , (err, res, body) ->
       return done(err) if err
       res.statusCode.should.eql 200
-      body.should.eql '[0]'
+      body.should.eql [0]
+      done()
+
+  it "must return [] on not existing email or username", (done) ->
+    request
+      url: "#{addr}/check"
+      body:
+        email: 'notyet@jfdksfljs.cz'
+        username: 'notyetgandalf'
+      json: true
+      method: 'post'
+    , (err, res, body) ->
+      return done(err) if err
+      res.statusCode.should.eql 200
+      body.should.eql []
       done()

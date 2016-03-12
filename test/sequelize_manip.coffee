@@ -1,14 +1,15 @@
 
 module.exports = (db) ->
 
-  find: (condition, done) ->
-    if condition.length > 1
-      condition = {$or: condition}
-    else
-      condition = condition[0]
+  find: (body, done) ->
+    cond = []
+    if body.username
+      cond.push({uname: body.username})
+    if body.email
+      cond.push({email: body.email})
 
     db.models.user.find
-      where: condition
+      where: $or: cond
     .then (found) ->
       return done(null, found)
     .catch (err) ->

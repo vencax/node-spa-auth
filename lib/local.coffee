@@ -3,7 +3,7 @@ LocalStrategy = require('passport-local').Strategy
 module.exports = (app, usermanip, passport, getToken) ->
 
   passport.use new LocalStrategy (username, password, done) ->
-    usermanip.find [{uname: username}, {email: username}], (err, user) ->
+    usermanip.find {username: username, email: username}, (err, user) ->
       return done(err) if err
       return done(null, false, message: 'Incorrect username.') if !user
 
@@ -22,11 +22,6 @@ module.exports = (app, usermanip, passport, getToken) ->
   # ---------------------------------------------------------------------------
 
   app.post '/check', (req, res) ->
-    if req.body.email
-      cond = [{email: req.body.email}]
-    else
-      cond = [{uname: req.body.uname || ''}]
-
-    usermanip.find cond, (err, user) ->
+    usermanip.find req.body, (err, user) ->
       return res.json([ 0 ]) if user
       return res.json([])
