@@ -1,8 +1,11 @@
 
 should = require('should')
+request = require('request').defaults({timeout: 50000})
 
 
-module.exports = (g, addr, request) ->
+module.exports = (g) ->
+
+  addr = g.baseurl + '/auth'
 
   g.account =
     username: 'aborova'

@@ -1,7 +1,7 @@
 
 should = require('should')
 http = require('http')
-request = require('request').defaults({timeout: 5000})
+request = require('request').defaults({timeout: 50000})
 fs = require('fs')
 bodyParser = require('body-parser')
 express = require('express')
@@ -64,5 +64,10 @@ describe "app", ->
   # run the rest of tests
   g.baseurl = "http://localhost:#{port}"
 
-  Register = require('./register')
-  Register(g, "#{g.baseurl}/auth", request)
+  submodules = [
+    './register'
+    './chpassword'
+  ]
+  for i in submodules
+    E = require(i)
+    E(g)

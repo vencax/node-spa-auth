@@ -68,7 +68,7 @@ module.exports = (app, usermanip, sendMail) ->
   app.post '/setpasswd', (req, res) ->
     token = req.query.sptoken
     jwt.verify token, process.env.SERVER_SECRET, (err, decoded) ->
-      return res.status(400).send('TOKEN_NOT_VALID') if err
+      return res.status(401).send('TOKEN_NOT_VALID') if err
 
       usermanip.find {email: decoded.email}, (err, user) ->
         user.password = req.body.password
