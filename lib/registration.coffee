@@ -2,6 +2,7 @@ jwt = require 'jsonwebtoken'
 emailing = require './emailing'
 
 CLIENTURL = process.env.CLIENTAPPURL || ''
+EMAIL_TOKEN_DURATION = parseInt(process.env.EMAIL_VALIDATION_TOKEN_DURATION) || "2 days"
 
 module.exports = (app, usermanip, sendMail) ->
 
@@ -11,7 +12,7 @@ module.exports = (app, usermanip, sendMail) ->
       email: user.email
     return jwt.sign(
       content, process.env.SERVER_SECRET,
-      expiresIn: process.env.EMAIL_VALIDATION_TOKEN_DURATION || 24 * 60 * 60
+      expiresIn: EMAIL_TOKEN_DURATION
     )
 
   _getClientLang = (req)->
