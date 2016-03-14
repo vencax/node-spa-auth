@@ -4,7 +4,7 @@ module.exports = (db) ->
   find: (body, done) ->
     cond = []
     if body.username
-      cond.push({uname: body.username})
+      cond.push({username: body.username})
     if body.email
       cond.push({email: body.email})
 
@@ -22,7 +22,7 @@ module.exports = (db) ->
     .catch (err) ->
       done(err)
   validPassword: (user, passwd) ->
-    user.passwd == passwd
+    user.password == passwd
 
   delete: (user, done)->
     user.destroy().then ()->

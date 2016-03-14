@@ -5,16 +5,18 @@ module.exports = (app, usermanip, passport, getToken) ->
   passport.use new LocalStrategy (username, password, done) ->
     usermanip.find {username: username, email: username}, (err, user) ->
       return done(err) if err
-      return done(null, false, message: 'Incorrect username.') if !user
-
+      return done(null, false, message: 'incorrect credentials') if !user
       if !usermanip.validPassword(user, password)
-        return done(null, false, message: 'Incorrect password.')
+        return done(null, false, message: 'incorrect credentials')
+      if user.status == 'disabled'
+        return done(null, false, message: 'user disabled')
       done null, user
 
   app.post '/login',
   passport.authenticate('local', {session: false, failWithError: true}),
   (req, res) ->
     user = req.user.toJSON()
+    delete user.password
     res.send
       user: user
       token: getToken(req.user)
