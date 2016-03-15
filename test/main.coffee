@@ -7,6 +7,7 @@ bodyParser = require('body-parser')
 express = require('express')
 
 process.env.SERVER_SECRET = 'fhdsakjhfkjal'
+process.env.DEFAULT_GID=2
 # process.env.DATABASE_URL = 'sqlite://db.sqlite'
 port = process.env.PORT || 3333
 g =

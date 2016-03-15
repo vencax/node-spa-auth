@@ -3,6 +3,9 @@ emailing = require './emailing'
 
 CLIENTURL = process.env.CLIENTAPPURL || ''
 EMAIL_TOKEN_DURATION = parseInt(process.env.EMAIL_VALIDATION_TOKEN_DURATION) || "2 days"
+throw new Error("set DEFAULT_GID!") if process.env.DEFAULT_GID == undefined
+DEFAULT_GID = process.env.DEFAULT_GID
+
 
 module.exports = (app, usermanip, sendMail) ->
 
@@ -36,11 +39,14 @@ module.exports = (app, usermanip, sendMail) ->
     emailing.send(action, user.email, ctx, serverAddr, sendMail, cb)
 
   app.post '/register', (req, res) ->
-    usermanip.find {email: req.body.email}, (err, user) ->
+    usermanip.find
+      username: req.body.username
+      email: req.body.email
+    , (err, user) ->
       if user
         return res.status(400).send('Already exists')
       user = usermanip.build(req.body)
-      user.gid = process.env.DEFAULT_GID || 1
+      user.gid = DEFAULT_GID
       user.status = 'disabled'
       usermanip.save user, (err, saved) ->
         return res.status(400).send(err) if err

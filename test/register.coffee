@@ -31,6 +31,13 @@ module.exports = (g) ->
       g.sentemails = []
       done()
 
+  it "fail register already registered user", (done) ->
+    request.post "#{addr}/register", form: g.account, (err, res, body) ->
+      return done err if err
+      res.statusCode.should.eql 400
+      g.sentemails.length.should.eql 0
+      done()
+
   it "must not login with unverified user", (done) ->
     request
       url: "#{addr}/login"
