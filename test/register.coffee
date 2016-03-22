@@ -72,7 +72,7 @@ module.exports = (g) ->
     , (err, res, body) ->
       return done(err) if err
       res.statusCode.should.eql 401
-      # body.should.eql 'CREDENTIALS_NOT_VALID'
+      should.not.exist(body.token)
       done()
 
   it "must login with good credentials", (done) ->
@@ -109,6 +109,7 @@ module.exports = (g) ->
       return done(err) if err
       res.statusCode.should.eql 200
       body.token.should.be.ok
+      should.not.exist(body.user.password)
       body.user.username.should.eql g.account.username
       body.user.name.should.eql g.account.name
       body.user.email.should.eql g.account.email
