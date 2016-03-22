@@ -1,5 +1,9 @@
+crypto = require('crypto')
 
 module.exports = (db) ->
+
+  _createPassword = (passwd)->
+    return crypto.createHmac('sha256', passwd).digest('hex')
 
   find: (body, done) ->
     cond = []
@@ -15,6 +19,8 @@ module.exports = (db) ->
     .catch (err) ->
       done(err)
   build: (props) ->
+    if 'password' of props
+      props.password = _createPassword(props.password)
     db.models.user.build props
   save: (user, done) ->
     user.save().then (saved) ->
@@ -22,7 +28,9 @@ module.exports = (db) ->
     .catch (err) ->
       done(err)
   validPassword: (user, passwd) ->
-    user.password == passwd
+    user.password == _createPassword(passwd)
+
+  createPasswordHash: _createPassword
 
   delete: (user, done)->
     user.destroy().then ()->

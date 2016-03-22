@@ -48,9 +48,18 @@ module.exports = (g) ->
       , (err, res, body) ->
         return done(err) if err
         res.statusCode.should.eql 401
-        g.manip.find {email: g.account.email}, (err, found) ->
+        # try orig
+        request
+          url: "#{addr}/login"
+          body:
+            username: g.account.username
+            password: g.account.password
+          json: true
+          method: 'post'
+        , (err, res, body) ->
           return done(err) if err
-          found.password.should.be.eql g.account.password
+          res.statusCode.should.eql 200
+          body.token.should.be.ok
           done()
 
     it "succeed with right token", (done) ->
@@ -64,7 +73,28 @@ module.exports = (g) ->
         return done(err) if err
         console.log body
         res.statusCode.should.eql 200
-        g.manip.find {email: g.account.email}, (err, found) ->
+        # try orig pwd
+        request
+          url: "#{addr}/login"
+          body:
+            username: g.account.username
+            password: g.account.password
+          json: true
+          method: 'post'
+        , (err, res, body) ->
           return done(err) if err
-          found.password.should.be.eql newPwd
-          done()
+          res.statusCode.should.eql 401
+          # try new one
+          request
+            url: "#{addr}/login"
+            body:
+              username: g.account.username
+              password: newPwd
+            json: true
+            method: 'post'
+          , (err, res, body) ->
+            return done(err) if err
+            res.statusCode.should.eql 200
+            body.user.should.be.ok
+            body.token.should.be.ok
+            done()

@@ -28,7 +28,7 @@ module.exports = (app, usermanip, sendMail) ->
     token = createToken(action, user)
     serverAddr = process.env.SERVERURL or req.protocol + '://' + req.get('host')
     if action == 'reset'
-      linkAct = (process.env.CLIENTAPPURL or '') + '/changepwd'
+      linkAct = CLIENTURL + '/changepwd'
     else
       linkAct = serverAddr + req.baseUrl + '/userverify'
     ctx =
@@ -44,26 +44,26 @@ module.exports = (app, usermanip, sendMail) ->
       email: req.body.email
     , (err, user) ->
       if user
-        return res.status(400).send('Already exists')
+        return res.status(400).json(message: 'already exists')
       user = usermanip.build(req.body)
       user.gid = DEFAULT_GID
       user.status = 'disabled'
       usermanip.save user, (err, saved) ->
-        return res.status(400).send(err) if err
+        return res.status(400).json(message: err) if err
         _sendEmail 'verify', user, req, (err) ->
-          return res.status(400).send(err) if err
-          res.status(201).send 'VERIFYCATION_PWD_MAIL_SENT'
+          return res.status(400).json(message: err) if err
+          res.status(201).json(message: 'VERIFYCATION_PWD_MAIL_SENT')
 
   # User clicks on the link in verification email received (token in URL)
   app.get '/userverify', (req, res) ->
     token = req.query.sptoken
     jwt.verify token, process.env.SERVER_SECRET, (err, decoded) ->
-      return res.status(404).send('TOKEN_NOT_VALID') if err
+      return res.status(401).json(message: 'token not valid') if err
 
       usermanip.find {email: decoded.email}, (err, user) ->
         user.status = 'enabled' # verified
         usermanip.save user, (err, saved) ->
-          return res.status(400).send(err) if err
+          return res.status(400).json(message: err) if err
           if process.env.SET_PWD_AFTER_VERIFICATION
             token = createToken('reset', user)
             url = "#{CLIENTURL}/changepwd?sptoken=#{token}"
@@ -75,19 +75,19 @@ module.exports = (app, usermanip, sendMail) ->
   app.post '/setpasswd', (req, res) ->
     token = req.query.sptoken
     jwt.verify token, process.env.SERVER_SECRET, (err, decoded) ->
-      return res.status(401).send('TOKEN_NOT_VALID') if err
+      return res.status(401).json(message: 'token not valid') if err
 
       usermanip.find {email: decoded.email}, (err, user) ->
-        user.password = req.body.password
+        user.password = usermanip.createPasswordHash(req.body.password)
         usermanip.save user, (err, saved) ->
-          return res.status(400).send(err) if err
-          res.status(200).send 'PWD_CHANGED'
+          return res.status(400).json(message: err) if err
+          res.status(200).json(message: 'password changed')
 
   app.post '/requestforgotten', (req, res) ->
     usermanip.find {email: req.body.email}, (err, user) ->
-      return res.status(400).send(err) if err
-      return res.status(404).send('USER_NOT_FOUND') if !user
+      return res.status(400).json(message: err) if err
+      return res.status(404).json(message: 'user not found') if !user
 
       _sendEmail 'reset', user, req, (err) ->
-        return res.status(400).send(err) if err
-        res.send 'FORGOTTEN_PWD_MAIL_SENT'
+        return res.status(400).json(message: err) if err
+        res.json(message: 'mail with instructions sent')
