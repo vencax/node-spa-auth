@@ -23,5 +23,5 @@ module.exports = (app, usermanip, bodyParser, sendMail) ->
 
   app.use (err, req, res, next) ->
     if err.name and err.name == 'AuthenticationError'
-      return res.status(401).json(message: 'CREDENTIALS_NOT_VALID')
+      return res.status(401).json(code: 1, message: 'invalid credentials')
     next(err)

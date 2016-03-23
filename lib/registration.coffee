@@ -52,7 +52,7 @@ module.exports = (app, usermanip, sendMail) ->
         return res.status(400).json(message: err) if err
         _sendEmail 'verify', user, req, (err) ->
           return res.status(400).json(message: err) if err
-          res.status(201).json(message: 'VERIFYCATION_PWD_MAIL_SENT')
+          res.status(201).json(message: 'verification email sent')
 
   # User clicks on the link in verification email received (token in URL)
   app.get '/userverify', (req, res) ->
