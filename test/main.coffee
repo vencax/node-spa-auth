@@ -67,6 +67,7 @@ describe "app", ->
 
   submodules = [
     './register'
+    './login'
     './chpassword'
   ]
   for i in submodules

@@ -4,7 +4,7 @@ emailing = require './emailing'
 CLIENTURL = process.env.CLIENTAPPURL || ''
 EMAIL_TOKEN_DURATION = parseInt(process.env.EMAIL_VALIDATION_TOKEN_DURATION) || "2 days"
 throw new Error("set DEFAULT_GID!") if process.env.DEFAULT_GID == undefined
-DEFAULT_GID = process.env.DEFAULT_GID
+DEFAULT_GID = parseInt(process.env.DEFAULT_GID)
 
 
 module.exports = (app, usermanip, sendMail) ->

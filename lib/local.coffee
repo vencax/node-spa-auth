@@ -19,7 +19,7 @@ module.exports = (app, usermanip, passport, getToken) ->
     delete user.password
     res.json
       user: user
-      token: getToken(req.user)
+      token: getToken(req)
 
   # ---------------------------------------------------------------------------
 

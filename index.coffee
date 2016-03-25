@@ -1,12 +1,20 @@
 jwt = require 'jsonwebtoken'
 passport = require 'passport'
+_ = require 'underscore'
 
 tokenExpiresIn = parseInt(process.env.TOKEN_VALIDITY_IN_MINS) * 60 || 24* 60 * 60
 console.log "token validity interval: #{tokenExpiresIn} secs"
 
-_getToken = (user) ->
-  return jwt.sign(
-    JSON.parse(JSON.stringify(user)),
+_getToken = (req) ->
+  """
+  req.query.scope can contain comma-separated user attrnames that shall be in token
+  """
+  user = JSON.parse(JSON.stringify(req.user))
+  if req.query.scope
+    tokencontent = _.pick(user, req.query.scope.split(','))
+  else
+    tokencontent = user
+  return jwt.sign(tokencontent,
     process.env.SERVER_SECRET,
     expiresIn: tokenExpiresIn
   )
