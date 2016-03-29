@@ -61,6 +61,8 @@ module.exports = (app, usermanip, sendMail) ->
       return res.status(401).json(message: 'token not valid') if err
 
       usermanip.find {email: decoded.email}, (err, user) ->
+        return res.status(400).json(message: err) if err
+        return res.status(404).json(message: 'user not found') if not user
         user.status = 'enabled' # verified
         usermanip.save user, (err, saved) ->
           return res.status(400).json(message: err) if err
@@ -78,6 +80,8 @@ module.exports = (app, usermanip, sendMail) ->
       return res.status(401).json(message: 'token not valid') if err
 
       usermanip.find {email: decoded.email}, (err, user) ->
+        return res.status(400).json(message: err) if err
+        return res.status(404).json(message: 'user not found') if not user
         user.password = usermanip.createPasswordHash(req.body.password)
         usermanip.save user, (err, saved) ->
           return res.status(400).json(message: err) if err
