@@ -12,9 +12,10 @@
   },
   "dependencies": {
     "fs-extra": "^4.0.2",
-    "handlebars": "^2.0.0",
-    "jsonwebtoken": "^5.*",
-    "underscore": "^1.8.3"
+    "handlebars": "^4.0.11",
+    "jsonwebtoken": "^8.*",
+    "underscore": "^1.8.3",
+    "urlencode": "^1.1.0"
   },
   "devDependencies": {
     "body-parser": "^1.8.2",
