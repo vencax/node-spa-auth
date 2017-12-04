@@ -3,10 +3,10 @@
 
 [![build status](https://api.travis-ci.org/vencax/node-spa-auth.svg)](https://travis-ci.org/vencax/node-spa-auth)
 
-Tested with angular, but supposing that all other SPA frameworks have similar possibilities.
-Based on [passport](http://passportjs.org/), social auths included.
+Tested with angular or react, but supposing that all other SPA frameworks have similar possibilities.
 Provides authentication based on [jsonwebtoken (JWT)](http://jwt.io/).
-Is express pluggable.
+Is express pluggable - provides express compatible handlers.
+For example see: [app.js](test/app.js#L38)
 
 ## Install
 
@@ -36,15 +36,6 @@ If not, define following:
 
 NOTE: this lib DO NOT care how the user is stored.
 Instead it recieve usermanip object for all user manipulations.
-See [sequelize_manip.coffee](test/sequelize_manip.coffee) what methodes such object MUST provide.
-
-## Routes provided
-
-- /login : POST (username, password), performs local users login
-- /check : POST (email), checks if given email is already registered (can be used on registration form)
-- /register : POST (username, name, email, password), register new user
-- /userverify : GET, completes user registration process (the link in email)
-- /setpasswd: POST (password, sptoken query param), change password form
-- /requestforgotten: POST (email), for requesting reset of pwd
+See [sequelize_manip.js](test/sequelize_manip.js) what methodes such object MUST provide.
 
 If you want to give a feedback, [raise an issue](https://github.com/vencax/node-spa-auth/issues).
