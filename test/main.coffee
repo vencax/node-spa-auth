@@ -1,58 +1,37 @@
 
 should = require('should')
-http = require('http')
 request = require('request').defaults({timeout: 50000})
-fs = require('fs')
-bodyParser = require('body-parser')
-express = require('express')
 
 process.env.SERVER_SECRET = 'fhdsakjhfkjal'
-process.env.DEFAULT_GID=2
-# process.env.DATABASE_URL = 'sqlite://db.sqlite'
+process.env.DEFAULT_GID = '2'
 port = process.env.PORT || 3333
 g =
   sentemails: []
 
-sendMail = (mail, cb) ->
-  g.sentemails.push mail
-  cb()
+sendMail = (mail) ->
+  return new Promise (resolve, reject) ->
+    g.sentemails.push mail
+    resolve(mail)
+g.sendMail = sendMail
+g.createError = (status, message) ->
+  return {message: message, status: status}
 
 # entry ...
 describe "app", ->
 
-  apiMod = require(__dirname + '/../index')
-
-  Sequelize = require('sequelize')
-
   before (done) ->
     this.timeout(5000)
+
     # init server
-    app = express()
-
-    sequelize = new Sequelize process.env.DATABASE_URL || 'sqlite:',
-      dialect: 'sqlite'  # sqlite! now!
-    # register models
-    mdlsMod = require(__dirname + '/models')
-    mdlsMod(sequelize, Sequelize)
-
-    sequelize.sync(logging: console.log).then () ->
-
-      api = express()
-      api.use(bodyParser.urlencoded({ extended: false }))
-      api.use(bodyParser.json())
-
-      manip = g.manip = require('./sequelize_manip')(sequelize)
-      apiMod api, manip, bodyParser, sendMail
-
-      app.use('/auth', api)
-
+    App = require('./app')
+    App(g)
+    .then (app) ->
       g.server = app.listen port, (err) ->
         return done(err) if err
-        setTimeout () ->
-          done()
-        , 1500
-
+        done()
       g.app = app
+    .catch(done)
+    return
 
   after (done) ->
     g.server.close()

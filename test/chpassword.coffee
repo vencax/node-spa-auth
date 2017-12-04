@@ -5,7 +5,7 @@ request = require('request').defaults({timeout: 50000})
 
 module.exports = (g) ->
 
-  addr = g.baseurl + '/auth'
+  addr = g.baseurl + '/register'
 
   describe "chage password", ->
 
@@ -15,10 +15,10 @@ module.exports = (g) ->
 
     it "not found on notexisting user", (done) ->
       request
-        url: "#{addr}/requestforgotten"
+        url: "#{addr}/forgotten"
         body: email: "idontexist@fsfsfs.cz"
         json: true
-        method: 'post'
+        method: 'put'
       , (err, res, body) ->
         return done(err) if err
         res.statusCode.should.eql 404
@@ -27,10 +27,10 @@ module.exports = (g) ->
 
     it "send email to existing user", (done) ->
       request
-        url: "#{addr}/requestforgotten"
+        url: "#{addr}/forgotten"
         body: email: g.account.email
         json: true
-        method: 'post'
+        method: 'put'
       , (err, res, body) ->
         return done(err) if err
         res.statusCode.should.eql 200
@@ -44,13 +44,13 @@ module.exports = (g) ->
         url: "#{addr}/setpasswd?sptoken=#{wrongToken}"
         body: password: 'some new pass'
         json: true
-        method: 'post'
+        method: 'put'
       , (err, res, body) ->
         return done(err) if err
         res.statusCode.should.eql 401
         # try orig
         request
-          url: "#{addr}/login"
+          url: "#{g.baseurl}/login"
           body:
             username: g.account.username
             password: g.account.password
@@ -68,14 +68,14 @@ module.exports = (g) ->
         url: "#{addr}/setpasswd?sptoken=#{g.changeToken}"
         body: password: newPwd
         json: true
-        method: 'post'
+        method: 'put'
       , (err, res, body) ->
         return done(err) if err
         console.log body
         res.statusCode.should.eql 200
         # try orig pwd
         request
-          url: "#{addr}/login"
+          url: "#{g.baseurl}/login"
           body:
             username: g.account.username
             password: g.account.password
@@ -86,7 +86,7 @@ module.exports = (g) ->
           res.statusCode.should.eql 401
           # try new one
           request
-            url: "#{addr}/login"
+            url: "#{g.baseurl}/login"
             body:
               username: g.account.username
               password: newPwd

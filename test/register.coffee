@@ -5,7 +5,7 @@ request = require('request').defaults({timeout: 50000})
 
 module.exports = (g) ->
 
-  addr = g.baseurl + '/auth'
+  addr = g.baseurl + '/register'
 
   g.account =
     username: 'aborova'
@@ -13,17 +13,13 @@ module.exports = (g) ->
     email: 'notyet@dasda.cz'
     password: 'fkdjsfjs'
 
-  it "must return empty array on not existing email", (done) ->
-    request.post "#{addr}/check", form:
-      email: g.account.username
-    , (err, res, body) ->
-      return done(err) if err
-      res.statusCode.should.eql 200
-      body.should.eql '[]'
-      done()
-
   it "must register a new local user", (done) ->
-    request.post "#{addr}/register", form: g.account, (err, res, body) ->
+    request
+      url: "#{g.baseurl}/register/"
+      body: g.account
+      json: true
+      method: 'post'
+    , (err, res, body) ->
       return done err if err
       res.statusCode.should.eql 201
       g.sentemails.length.should.eql 1
@@ -32,7 +28,12 @@ module.exports = (g) ->
       done()
 
   it "fail register already registered user", (done) ->
-    request.post "#{addr}/register", form: g.account, (err, res, body) ->
+    request
+      url: "#{g.baseurl}/register/"
+      body: g.account
+      json: true
+      method: 'post'
+    , (err, res, body) ->
       return done err if err
       res.statusCode.should.eql 400
       g.sentemails.length.should.eql 0
@@ -40,7 +41,7 @@ module.exports = (g) ->
 
   it "must not login with unverified user", (done) ->
     request
-      url: "#{addr}/login"
+      url: "#{g.baseurl}/login"
       body:
         username: g.account.username
         password: g.account.password
@@ -63,7 +64,7 @@ module.exports = (g) ->
 
   it "must not login with wrong credentials", (done) ->
     request
-      url: "#{addr}/login"
+      url: "#{g.baseurl}/login"
       body:
         username: g.account.username
         password: 'incorrect'
@@ -77,7 +78,7 @@ module.exports = (g) ->
 
   it "must login with good credentials", (done) ->
     request
-      url: "#{addr}/login"
+      url: "#{g.baseurl}/login"
       body:
         username: g.account.username
         password: g.account.password
@@ -85,21 +86,21 @@ module.exports = (g) ->
       method: 'post'
     , (err, res, body) ->
       return done(err) if err
-      console.log body
       res.statusCode.should.eql 200
       body.token.should.be.ok
-      g.manip.find {"username": body.user.username}, (err, found) ->
-        return done(err) if err
+      g.manip.find {"username": body.user.username}
+      .then (found) ->
         body.user.id.should.not.be.below 0
         body.user.username.should.eql found.username
         body.user.name.should.eql found.name
         body.user.email.should.eql found.email
         body.user.status.should.eql 'enabled'
         done()
+      .catch(done)
 
   it "must login with email as username", (done) ->
     request
-      url: "#{addr}/login"
+      url: "#{g.baseurl}/login"
       body:
         username: g.account.email
         password: g.account.password
@@ -113,44 +114,4 @@ module.exports = (g) ->
       body.user.username.should.eql g.account.username
       body.user.name.should.eql g.account.name
       body.user.email.should.eql g.account.email
-      done()
-
-  it "must return [0] on ALREADY existing email", (done) ->
-    request
-      url: "#{addr}/check"
-      body:
-        email: g.account.email
-      json: true
-      method: 'post'
-    , (err, res, body) ->
-      return done(err) if err
-      res.statusCode.should.eql 200
-      body.should.eql [0]
-      done()
-
-  it "must return [0] on ALREADY existing uname", (done) ->
-    request
-      url: "#{addr}/check"
-      body:
-        username: g.account.username
-      json: true
-      method: 'post'
-    , (err, res, body) ->
-      return done(err) if err
-      res.statusCode.should.eql 200
-      body.should.eql [0]
-      done()
-
-  it "must return [] on not existing email or username", (done) ->
-    request
-      url: "#{addr}/check"
-      body:
-        email: 'notyet@jfdksfljs.cz'
-        username: 'notyetgandalf'
-      json: true
-      method: 'post'
-    , (err, res, body) ->
-      return done(err) if err
-      res.statusCode.should.eql 200
-      body.should.eql []
       done()
