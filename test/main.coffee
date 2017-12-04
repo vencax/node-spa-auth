@@ -13,8 +13,8 @@ sendMail = (mail) ->
     g.sentemails.push mail
     resolve(mail)
 g.sendMail = sendMail
-g.createError = (status, message) ->
-  return {message: message, status: status}
+g.createError = (message, status) ->
+  return {message: message, status: status || 400}
 
 # entry ...
 describe "app", ->
