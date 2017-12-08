@@ -11,13 +11,15 @@ module.exports = (db) => {
         cond.push({email: body.email})
       }
       return db.models.user.find({where: {$or: cond}})
+        .then(found => found ? found.toJSON() : null)
     },
 
     save: (user) => {
-      if (user.sequelize === undefined) {
-        user = db.models.user.build(user)
+      if (user.id === undefined) {
+        return db.models.user.create(user)
+      } else {
+        return db.models.user.update(user, {where: {id: user.id}})
       }
-      return user.save()
     }
   }
 }
