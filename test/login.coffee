@@ -24,6 +24,7 @@ module.exports = (g) ->
         return done(err) if err
         res.statusCode.should.eql 200
         body.token.should.be.ok
+        console.log "token: #{body.token}"
         jwt.verify body.token, process.env.SERVER_SECRET, (err, decoded) ->
           done(err) if err
           Object.keys(decoded).length.should.eql 5
