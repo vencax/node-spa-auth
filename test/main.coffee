@@ -3,7 +3,6 @@ should = require('should')
 request = require('request').defaults({timeout: 50000})
 
 process.env.SERVER_SECRET = 'fhdsakjhfkjal'
-process.env.DEFAULT_GID = '2'
 port = process.env.PORT || 3333
 g =
   sentemails: []

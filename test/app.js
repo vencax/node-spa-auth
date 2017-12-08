@@ -16,10 +16,6 @@ const User = sequelize.define('user', {
   name: Sequelize.STRING,
   email: Sequelize.STRING,
   password: Sequelize.STRING,
-  gid: {
-    type: Sequelize.INTEGER,
-    allowNull: false
-  },
   status: {
     type: Sequelize.ENUM('enabled', 'disabled'),
     defaultValue: 'enabled'

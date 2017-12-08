@@ -14,7 +14,7 @@ module.exports = (g) ->
 
     it "must return only desired user attrs in token", (done) ->
       request
-        url: "#{g.baseurl}/login?scope=username,gid,email"
+        url: "#{g.baseurl}/login?scope=username,email,status"
         body:
           username: g.account.username
           password: g.account.password
@@ -28,7 +28,6 @@ module.exports = (g) ->
           done(err) if err
           Object.keys(decoded).length.should.eql 5
           decoded.username.should.eql g.account.username
-          decoded.gid.should.eql parseInt(process.env.DEFAULT_GID)
           decoded.email.should.eql g.account.email
           should.not.exist(decoded.password)
           should.not.exist(decoded.name)

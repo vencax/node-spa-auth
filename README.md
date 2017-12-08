@@ -20,7 +20,6 @@ Config is performed through few environment variables:
 - EMAIL_TEMPLATE_DIR: directory where email templates are (default: emailTemplates in this project)
 - EMAIL_VALIDATION_TOKEN_DURATION: duration (in minutes) of tokens used in emails (default 2 days)
 - FALLBACKLANG: code of fallback language for email template (default en)
-- DEFAULT_GID: default GID of registered users (default 1)
 - CHPASSWDLINK: url with chage password form (default /changepwd)
 - PROJECT_NAME: name of your project or team used in email templates (default hostname)
 - TOKEN_VALIDITY_IN_MINS: duration of JWT token in minutes (default 24h)
