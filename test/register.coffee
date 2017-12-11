@@ -13,6 +13,10 @@ module.exports = (g) ->
     email: 'notyet@dasda.cz'
     password: 'fkdjsfjs'
 
+  beforeEach (done) ->
+    g.sentemails = []
+    done()
+
   it "must register a new local user", (done) ->
     request
       url: "#{g.baseurl}/register/"
@@ -50,6 +54,14 @@ module.exports = (g) ->
     , (err, res, body) ->
       return done(err) if err
       res.statusCode.should.eql 401
+      done()
+
+  it "must resend the verification link", (done) ->
+    request.get "#{g.baseurl}/register/resendverification", (err, res, body) ->
+      return done(err) if err
+      res.statusCode.should.eql 200
+      g.sentemails.length.should.eql 1
+      g.sentemails[0].text.match(/http(s?):[^\n]+/).length.should.eql 2
       done()
 
   it "must verify user through link from email", (done) ->

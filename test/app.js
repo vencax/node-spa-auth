@@ -44,6 +44,7 @@ module.exports = (g) => sequelize.sync({logging: console.log})
   registration.get('/verify', auth.registration.verify)
   registration.put('/setpasswd', auth.registration.setpasswd)
   registration.put('/forgotten', auth.registration.requestforgotten)
+  registration.get('/resendverification', auth.registration.resendverification)
   app.use('/register', registration)
 
   function _generalErrorHandler (err, req, res, next) {
