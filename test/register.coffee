@@ -57,7 +57,13 @@ module.exports = (g) ->
       done()
 
   it "must resend the verification link", (done) ->
-    request.get "#{g.baseurl}/register/resendverification", (err, res, body) ->
+    request
+      url: "#{g.baseurl}/register/resendverification"
+      body:
+        email: g.account.email
+      json: true
+      method: 'put'
+    , (err, res, body) ->
       return done(err) if err
       res.statusCode.should.eql 200
       g.sentemails.length.should.eql 1
