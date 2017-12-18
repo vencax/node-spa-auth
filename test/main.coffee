@@ -4,6 +4,8 @@ request = require('request').defaults({timeout: 50000})
 
 process.env.SERVER_SECRET = 'fhdsakjhfkjal'
 process.env.SERVER_SECRET_4_EMAILS = 'edwrwerwqrqrq'
+process.env.LOGIN_URL = '/login'
+process.env.CHANGE_PASSWORD_URL = '/changepassword'
 port = process.env.PORT || 3333
 g =
   sentemails: []
